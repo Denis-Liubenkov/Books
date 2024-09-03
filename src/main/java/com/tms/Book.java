@@ -9,11 +9,7 @@ public class Book {
     public String author;
     public String description;
 
-    public Book(int id, String title, String author, String description) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.description = description;
+    public Book() {
     }
 
     public int getId() {
@@ -46,5 +42,15 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -14,6 +14,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("org.springframework:spring-context:6.1.12")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 }
 
 tasks.test {
