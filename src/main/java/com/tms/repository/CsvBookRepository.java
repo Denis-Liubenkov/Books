@@ -6,9 +6,9 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.tms.Book;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class CsvBookRepository implements BookRepository {
@@ -24,6 +24,17 @@ public class CsvBookRepository implements BookRepository {
     }
 
     @Override
+    public Book findById(Integer id) throws IOException {
+        List<Book> books = findAll();
+        for (Book book : books) {
+            if (Objects.equals(book.getId(), id)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void save(Book book) throws IOException {
         List<Book> books = findAll();
         books.add(book);
@@ -33,8 +44,12 @@ public class CsvBookRepository implements BookRepository {
     @Override
     public void update(Book book) throws IOException {
         List<Book> books = findAll();
-        books.removeIf(b -> b.getId() == book.getId());
-        books.add(book);
+        for (int i = 0; i < books.size(); i++) {
+            if (Objects.equals(books.get(i).getId(), book.getId())) {
+                books.set(i, book);
+                break;
+            }
+        }
         csvMapper.writer(csvMapper.schemaFor(Book.class).withHeader()).writeValue(new File(csvFile), books);
     }
 
