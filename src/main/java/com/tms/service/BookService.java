@@ -19,7 +19,11 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public void addBook(Book book) throws IOException {
+    public Book getBookById(Integer id) throws IOException {
+        return bookRepository.findById(id);
+    }
+
+    public void createBook(Book book) throws IOException {
         bookRepository.save(book);
     }
 

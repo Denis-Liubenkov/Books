@@ -8,6 +8,8 @@ import java.util.List;
 public interface BookRepository {
     List<Book> findAll() throws IOException;
 
+    Book findById(Integer id) throws IOException;
+
     void save(Book book) throws IOException;
 
     void update(Book book) throws IOException;
