@@ -1,15 +1,13 @@
 package com.tms.config;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
 @ComponentScan("com.tms")
 @PropertySource("classpath:messages.properties")
+@EnableAspectJAutoProxy
 public class Config {
 
     @Bean
