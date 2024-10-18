@@ -1,37 +1,37 @@
 package com.tms.service;
 
-import com.tms.Book;
-import com.tms.repository.BookRepository;
+import com.tms.domain.Book;
+import com.tms.repository.CsvBookRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookService {
-    private final BookRepository bookRepository;
+    private final CsvBookRepository csvBookRepository;
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public BookService(CsvBookRepository csvBookRepository) {
+        this.csvBookRepository = csvBookRepository;
     }
 
-    public List<Book> getAllBooks() throws IOException {
-        return bookRepository.findAll();
+    public List<Map<String, Object>> getAllBooks() {
+        return csvBookRepository.findAll();
     }
 
-    public Book getBookById(Integer id) throws IOException {
-        return bookRepository.findById(id);
+    public Book getBookById(Integer id) {
+        return csvBookRepository.findById(id);
     }
 
-    public void createBook(Book book) throws IOException {
-        bookRepository.save(book);
+    public void createBook(Book book) {
+        csvBookRepository.save(book);
     }
 
-    public void updateBook(Book book) throws IOException {
-        bookRepository.update(book);
+    public void updateBook(Book book) {
+        csvBookRepository.update(book);
     }
 
-    public void deleteBook(int id) throws IOException {
-        bookRepository.delete(id);
+    public void deleteBook(int id) {
+        csvBookRepository.delete(id);
     }
 }

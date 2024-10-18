@@ -1,18 +1,19 @@
 package com.tms.repository;
 
-import com.tms.Book;
+import com.tms.domain.Book;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface BookRepository {
-    List<Book> findAll() throws IOException;
+    List<Map<String, Object>> findAll() throws SQLException;
 
-    Book findById(Integer id) throws IOException;
+    Book findById(Integer id);
 
-    void save(Book book) throws IOException;
+    void save(Book book);
 
-    void update(Book book) throws IOException;
+    void update(Book book);
 
-    void delete(int id) throws IOException;
+    void delete(int id);
 }

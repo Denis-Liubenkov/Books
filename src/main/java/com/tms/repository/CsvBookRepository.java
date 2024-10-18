@@ -1,62 +1,54 @@
 package com.tms.repository;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.tms.Book;
+import com.tms.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.io.*;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 @Repository
 public class CsvBookRepository implements BookRepository {
 
-    private final String csvFile = "src/main/resources/books.csv";
-    private final CsvMapper csvMapper = new CsvMapper();
+    private final JdbcTemplate jdbcTemplate;
 
-    @Override
-    public List<Book> findAll() throws IOException {
-        CsvSchema csvSchema = csvMapper.schemaFor(Book.class).withHeader();
-        MappingIterator<Book> iterator = csvMapper.readerFor(Book.class).with(csvSchema).readValues(new File(csvFile));
-        return iterator.readAll();
+    public CsvBookRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public Book findById(Integer id) throws IOException {
-        List<Book> books = findAll();
-        for (Book book : books) {
-            if (Objects.equals(book.getId(), id)) {
-                return book;
-            }
-        }
-        return null;
+    public List<Map<String, Object>> findAll() {
+        String sql = "SELECT * FROM books";
+        return jdbcTemplate.queryForList(sql);
     }
 
-    @Override
-    public void save(Book book) throws IOException {
-        List<Book> books = findAll();
-        books.add(book);
-        csvMapper.writer(csvMapper.schemaFor(Book.class).withHeader()).writeValue(new File(csvFile), books);
+    public Book findById(Integer id) {
+        String sql = "SELECT * FROM books WHERE id = ?";
+        Map<String, Object> bookData = jdbcTemplate.queryForMap(sql, id);
+        Book book = new Book(
+                (Integer) bookData.get("id"),
+                (String) bookData.get("title"),
+                (String) bookData.get("description"));
+        return book;
     }
 
-    @Override
-    public void update(Book book) throws IOException {
-        List<Book> books = findAll();
-        for (int i = 0; i < books.size(); i++) {
-            if (Objects.equals(books.get(i).getId(), book.getId())) {
-                books.set(i, book);
-                break;
-            }
-        }
-        csvMapper.writer(csvMapper.schemaFor(Book.class).withHeader()).writeValue(new File(csvFile), books);
+    public void save(Book book) {
+        String sql = "INSERT INTO books VALUES (?,?,?)";
+        jdbcTemplate.update(sql,
+                book.getId(),
+                book.getTitle(),
+                book.getDescription());
     }
 
-    @Override
-    public void delete(int id) throws IOException {
-        List<Book> books = findAll();
-        books.removeIf(b -> b.getId() == id);
-        csvMapper.writer(csvMapper.schemaFor(Book.class).withHeader()).writeValue(new File(csvFile), books);
+    public void update(Book book) {
+        String sql = "UPDATE books SET title = ?, description = ? WHERE id = ?";
+        jdbcTemplate.update(sql,
+                book.getTitle(),
+                book.getDescription(),
+                book.getId());
+    }
+
+    public void delete(int id) {
+        String sql = "DELETE FROM books WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }
