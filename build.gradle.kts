@@ -17,7 +17,7 @@ dependencies {
     implementation("org.slf4j:slf4j-log4j12:2.1.0-alpha1")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
     implementation("org.aspectj:aspectjweaver:1.9.22.1")
-    implementation("org.springframework:spring-jdbc:6.1.13")
+    implementation("org.hibernate.orm:hibernate-core:7.0.0.Beta1")
     implementation("org.postgresql:postgresql:42.7.4")
 
 }
