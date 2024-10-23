@@ -19,7 +19,8 @@ dependencies {
     implementation("org.aspectj:aspectjweaver:1.9.22.1")
     implementation("org.hibernate.orm:hibernate-core:7.0.0.Beta1")
     implementation("org.postgresql:postgresql:42.7.4")
-
+    implementation("org.hibernate.orm:hibernate-jcache:7.0.0.Beta1")
+    implementation("org.ehcache:ehcache:3.10.8")
 }
 
 tasks.test {

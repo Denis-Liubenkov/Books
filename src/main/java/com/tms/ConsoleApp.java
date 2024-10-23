@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Scanner;
 
 @Component
@@ -41,11 +40,11 @@ public class ConsoleApp {
 
             switch (choice) {
                 case 1 -> {
-                    List<Map<String, Object>> bookList = bookService.getAllBooks();
+                    List<Book> bookList = bookService.getAllBooks();
                     if (bookList.isEmpty()) {
                         System.out.println(messageSource.getMessage("message.emptyBookList", null, locale));
                     } else {
-                        for (Map<String, Object> book : bookList) {
+                        for (Book book : bookList) {
                             System.out.println(book);
                         }
                     }
@@ -55,9 +54,7 @@ public class ConsoleApp {
                     String title = scanner.nextLine();
                     System.out.println(messageSource.getMessage("input.description", null, locale));
                     String description = scanner.nextLine();
-                    int newId = (bookService.getAllBooks().size() + 1);
                     Book book = new Book();
-                    book.setId(newId);
                     book.setTitle(title);
                     book.setDescription(description);
                     bookService.createBook(book);

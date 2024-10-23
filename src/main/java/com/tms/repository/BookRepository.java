@@ -4,10 +4,9 @@ import com.tms.domain.Book;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public interface BookRepository {
-    List<Map<String, Object>> findAll() throws SQLException;
+    List<Book> findAll() throws SQLException;
 
     Book findById(Integer id);
 
@@ -15,5 +14,5 @@ public interface BookRepository {
 
     void update(Book book);
 
-    void delete(int id);
+    void delete(Integer id);
 }

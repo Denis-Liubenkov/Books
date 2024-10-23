@@ -10,11 +10,11 @@ CREATE TABLE Genres (
 CREATE TABLE Books (
                        id SERIAL PRIMARY KEY,
                        title VARCHAR(255) NOT NULL,
-                       description TEXT,
-                       author_id INTEGER NOT NULL,
-                       genre_id INTEGER NOT NULL,
-                       FOREIGN KEY (author_id) REFERENCES Authors(author_id),
-                       FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
+                       description TEXT
+                      -- author_id INTEGER NOT NULL,
+                      --genre_id INTEGER NOT NULL,
+                      -- FOREIGN KEY (author_id) REFERENCES Authors(author_id),
+                      --FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
 );
 CREATE TABLE Publishers (
                             publisher_id SERIAL PRIMARY KEY,

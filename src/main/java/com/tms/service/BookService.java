@@ -3,9 +3,7 @@ package com.tms.service;
 import com.tms.domain.Book;
 import com.tms.repository.CsvBookRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BookService {
@@ -15,7 +13,7 @@ public class BookService {
         this.csvBookRepository = csvBookRepository;
     }
 
-    public List<Map<String, Object>> getAllBooks() {
+    public List<Book> getAllBooks() {
         return csvBookRepository.findAll();
     }
 
@@ -31,7 +29,7 @@ public class BookService {
         csvBookRepository.update(book);
     }
 
-    public void deleteBook(int id) {
+    public void deleteBook(Integer id) {
         csvBookRepository.delete(id);
     }
 }
