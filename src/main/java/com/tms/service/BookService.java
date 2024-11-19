@@ -1,35 +1,38 @@
 package com.tms.service;
 
 import com.tms.domain.Book;
-import com.tms.repository.CsvBookRepository;
+import com.tms.repository.BookRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
-    private final CsvBookRepository csvBookRepository;
 
-    public BookService(CsvBookRepository csvBookRepository) {
-        this.csvBookRepository = csvBookRepository;
+    private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public List<Book> getAllBooks() {
-        return csvBookRepository.findAll();
+        return bookRepository.findAll();
     }
 
-    public Book getBookById(Integer id) {
-        return csvBookRepository.findById(id);
+    public Optional<Book> getBookById(Integer id) {
+        return bookRepository.findById(id);
     }
 
     public void createBook(Book book) {
-        csvBookRepository.save(book);
+        bookRepository.save(book);
     }
 
     public void updateBook(Book book) {
-        csvBookRepository.update(book);
+        bookRepository.saveAndFlush(book);
     }
 
     public void deleteBook(Integer id) {
-        csvBookRepository.delete(id);
+        bookRepository.deleteById(id);
     }
 }

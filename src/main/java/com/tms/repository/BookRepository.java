@@ -1,18 +1,20 @@
 package com.tms.repository;
 
 import com.tms.domain.Book;
+import lombok.NonNull;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
-public interface BookRepository {
-    List<Book> findAll() throws SQLException;
+@Repository
+public interface BookRepository extends JpaRepository<Book, Integer> {
+    @NonNull
+    List<Book> findAll();
 
-    Book findById(Integer id);
+    @NonNull
+    Optional<Book> findById(@NonNull Integer id);
 
-    void save(Book book);
-
-    void update(Book book);
-
-    void delete(Integer id);
+    void deleteById(@NonNull Integer id);
 }

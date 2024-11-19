@@ -1,19 +1,13 @@
 package com.tms;
 
-import com.tms.config.Config;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.IOException;
-
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-        ConsoleApp consoleApp = context.getBean(ConsoleApp.class);
-        try {
-            consoleApp.begin();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        SpringApplication.run(Main.class, args);
     }
 }
+
+
