@@ -7,12 +7,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -25,6 +31,26 @@ public class BookController {
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Book> uploadBookImage(@Valid @RequestPart("book") Book book, @RequestPart("image") MultipartFile image) throws IOException {
+        return ResponseEntity.ok(bookService.addBookWithImage(book, image));
+    }
+
+    @GetMapping("/image/{bookId}")
+    public ResponseEntity<InputStreamResource> downloadBookImage(@PathVariable("bookId") String bookId) throws IOException {
+        Book book = bookService.getBookWithImage(bookId);
+        GridFsResource resource = bookService.getImage(book.getImageId());
+        ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                .filename(URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8), StandardCharsets.UTF_8)
+                .build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(contentDisposition);
+        headers.setContentType(MediaType.valueOf(resource.getContentType()));
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new InputStreamResource(resource.getInputStream()));
     }
 
     @Operation(summary = "Get list of books")
@@ -50,7 +76,7 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book is not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),})
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getOneBook(@PathVariable("id") @Parameter(description = "it is book`s id") Integer id) {
+    public ResponseEntity<Book> getOneBook(@PathVariable("id") @Parameter(description = "it is book`s id") String id) {
         Book book = bookService.getBookById(id).orElseThrow(BookNotFoundException::new);
         log.info("Book with id: " + id + " is found!");
         return new ResponseEntity<>(book, HttpStatus.OK);
@@ -86,7 +112,7 @@ public class BookController {
             @ApiResponse(responseCode = "409", description = "Book is not deleted"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),})
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") Integer id) {
+    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("id") String id) {
         bookService.deleteBook(id);
         log.info("Book with id: " + id + " is deleted!");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

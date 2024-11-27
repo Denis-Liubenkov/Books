@@ -1,9 +1,12 @@
 plugins {
     id("java")
+    id ("org.springframework.boot") version "3.3.5"
+    id ("io.spring.dependency-management") version "1.1.4"
 }
 
 group = "com.tms"
 version = "1.0-SNAPSHOT"
+
 
 repositories {
     mavenCentral()
@@ -19,8 +22,8 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.springdoc:springdoc-openapi-ui:1.8.0")
-    implementation ("org.springframework.boot:spring-boot-starter-data-mongodb")
-    implementation ("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.4.0")
+    implementation ("org.springframework.boot:spring-boot-starter-validation:3.4.0")
 
 }
 
